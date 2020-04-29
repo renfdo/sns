@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block title%}Insumos{% endblock title %}
+{% block content %}
+<div class="containter">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-1 text-gray-800">Insumos</h1>
+    <!-- Approach -->
+  <div class="card shadow mb-4">
+    <div class="card-body">
+        <div class="table-responsive">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item">
+                      <a href="{% url 'insumo_list' %}">INSUMOS</a>
+                  </li>
+                  {% if url.type_file != '' %}
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <a href="{% url 'insumo_list' url.type_file %}">
+                        {{url.type_file}}
+                        </a>
+                    </li>
+                  {% endif %}
+
+                  {% if url.date != '' %}
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <a href="{% url 'insumo_list' url.type_file url.date %}">
+                        {{url.date}}
+                        </a>
+                    </li>
+                  {% endif %}
+                </ol>
+            </nav>
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Data Puxada</th>
+                    <th>Data Processamento</th>
+                    <th>Qtd Arquivos</th>
+                    <th></th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                    <th>Nome</th>
+                    <th>Data Puxada</th>
+                    <th>Data Processamento</th>
+                    <th>QTD Arquivos</th>
+                    <th></th>
+                </tr>
+              </tfoot>
+              <tbody>
+                {% for insumo in insumos %}
+                    <tr>
+                        <td>
+                            {% if insumo.isdir %}
+                                <i class="fas fa-folder"></i>
+                                <a href="{% url 'insumo_list' url.type_file insumo.name %}">{{ insumo }}</a>
+                            {% else %}
+                                <i class="fas fa-file"></i>
+                                <a href="{% url 'insumo_details' url.type_file insumo.id %}">{{ insumo.name }}</a>
+                            {% endif %}
+                        </td>
+                        <td>{{ insumo.data_puxada|date:"d/m/Y" }}</td>
+                        <td>{{ insumo.processed_date|date:'d/m/Y H:i:s' }}</td>
+                        <td>{{ insumo.total_files }}</td>
+                        <td>
+                            {% if not insumo.isdir %}
+                            <a href="{% url 'insumo_export' url.type_file insumo.id %}">
+                                <i class="fas fa-file-csv"></i>
+                            </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+        </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

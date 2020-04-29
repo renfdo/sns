@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load bootstrap %}
+{% block title%}Gerar/Atualizar Justificativa BO{% endblock title %}
+{% block content %}
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+<script>
+    $(function() {
+        $('#id_is_active_volta').change(function(){
+            if($(this).prop('checked')){
+                document.getElementById("id_value_volta").disabled=false;
+            }
+            else{
+                document.getElementById("id_value_volta").disabled=true;
+                document.getElementById("id_value_volta").value=0;
+            }
+        });
+    });
+
+  $(function() {
+    $('#id_is_active_rateio').change(function(){
+        if($(this).prop('checked')){
+            document.getElementById("id_value_rateio").disabled=false;
+        }
+        else{
+             document.getElementById("id_value_rateio").disabled=true;
+             document.getElementById("id_value_rateio").value=0;
+        }
+    });
+  });
+
+  $(function() {
+    $('#id_is_active_alocacao').change(function(){
+        if($(this).prop('checked')){
+            document.getElementById("id_value_alocacao").disabled=false;
+        }
+        else{
+             document.getElementById("id_value_alocacao").disabled=true;
+             document.getElementById("id_value_alocacao").value=0;
+        }
+        });
+    });
+    $(function() {
+    $('#id_is_active_mto').change(function(){
+        if($(this).prop('checked')){
+            document.getElementById("id_value_mto").disabled=false;
+        }
+        else{
+             document.getElementById("id_value_mto").disabled=true;
+             document.getElementById("id_value_mto").value=0;
+        }
+    });
+    });
+
+    $(function() {
+    $('#submit').click(function(){
+            document.getElementById("id_value_rateio").disabled=false;
+            document.getElementById("id_value_volta").disabled=false;
+            document.getElementById("id_value_alocacao").disabled=false;
+            document.getElementById("id_value_mto").disabled=false;
+    });
+    });
+    
+</script>
+
+<div class="containter">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Parâmetros</h1>
+    </div>
+    <div class="row justify-content-md-center">
+        <div class="col-lg-8">
+            <form method="POST">
+                {% csrf_token %}
+                <table class="table table-striped table-bordered table-sm">
+                        <thead>
+                        <tr>
+                            <th>Regra</th>
+                            <th>Semanas</th>
+                            <th>Ativo?</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>{{form.rateio.label}}</td>
+                            <td>{{form.value_rateio}}</td>
+                            <td>{{form.is_active_rateio}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{form.volta.label}}</td>
+                            <td>{{form.value_volta}}</td>
+                            <td>{{form.is_active_volta}}</td>
+                        </tr>
+                        <tr>
+                            <td>{{form.alocacao.label}}</td>
+                            <td>{{form.value_alocacao}}</td>
+                            <td>
+                                {{form.is_active_alocacao}}
+                            </td>
+                        </tr>
+                        <tr>
+                                <td>{{form.mto.label}}</td>
+                                <td>{{form.value_mto}}</td>
+                                <td>
+                                    {{form.is_active_mto}}
+                                </td>
+                            </tr>
+                        </tbody>
+                </table>
+                <div class="align-items-right" style="text-align: right;">
+                    <input id="submit" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
+                        class="fas fa-download fa-sm text-white-50"
+                        type="submit" value="Alterar">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

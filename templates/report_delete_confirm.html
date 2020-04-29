@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title%}Deletar Relat&oacute;rio{% endblock title %}
+{% block content %}
+<!-- TODO: Mover esta confirmacao para popup -->
+<h1>Deletar Relat&oacute;rio</h1>
+<h2>Deseja deletar {{ report.liquid_type }} ?</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form|bootstrap }}
+    <button type="submit">Deletar</button>
+</form>
+{% endblock content %}

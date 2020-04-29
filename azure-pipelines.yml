@@ -1,0 +1,49 @@
+variables:
+  ConnectedServiceName: 'PythonWebApp'
+  WebAppName: 'ambev-sns-rg-br-non-prod'
+
+trigger:
+- django
+
+pool:
+  vmImage: 'Ubuntu-16.04'
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.7'
+    architecture: 'x64'
+
+# The | symbol is a continuation character, indicating a multi-line script.
+# A single-line script can immediately follows "- script:" without the |.
+- script: |
+    # antenv3.6 is the virtual environment name that App Service expects with
+    # Python 3.6; use "antenv" for Python 3.7.
+    python3.7 -m venv antenv
+    source antenv/bin/activate
+    pip3.7 install setuptools
+    pip3.7 install -r sns_project/requirements/webapp.txt
+
+  # The displayName is shows in the pipeline UI when a build runs
+  displayName: 'Install Dependencies'
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Build.SourcesDirectory)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/Application$(Build.BuildId).zip'
+    #archiveFile: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    replaceExistingArchive: true
+    verbose: # (no value); this input is optional
+
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'PythonWebApp'
+    appType: 'webAppLinux'
+    WebAppName: 'SNS-APP'
+    packageForLinux: '$(Build.ArtifactStagingDirectory)/Application$(Build.BuildId).zip'
+    RuntimeStack: 'PYTHON|3.7'
+    StartupCommand: 'startup.txt'
+    #ScriptType: Inline Script
+    #InlineScript: 'python manage.py collectstatic --setting=sns_project.settings.develop'

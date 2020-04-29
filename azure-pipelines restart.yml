@@ -1,0 +1,16 @@
+variables:
+  ConnectedServiceName: 'PythonWebApp'
+  WebAppName: 'ambev-sns-rg-br-non-prod'
+
+trigger:
+- django
+
+pool:
+  vmImage: 'Ubuntu-16.04'
+
+steps:
+- task: AzureAppServiceManage@0
+  inputs:
+    azureSubscription: 'PythonWebApp'
+    Action: 'Restart Azure App Service'
+    WebAppName: 'SNS-APP'

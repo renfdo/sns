@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load bootstrap %}
+{% block title%}Processamento Manual{% endblock title %}
+{% block content %}
+<div class="containter">
+   <div class="d-sm-flex align-items-center justify-content-between mb-4">
+      <h1 class="h3 mb-0 text-gray-800">Processamento Manual</h1>
+  </div>
+    <div class="row justify-content-md-center">
+        <div class="col-lg-8">
+
+            <form method="POST">
+        {% csrf_token %}
+        {{ form|bootstrap }}
+        <br>
+         <input class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
+                class="fas fa-download fa-sm text-white-50"
+                type="submit" value="Processar">
+
+    </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

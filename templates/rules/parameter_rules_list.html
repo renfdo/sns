@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Listar Justificativas BO{% endblock title %}
+{% block content %}
+<div class="container">
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+      <h1 class="h3 mb-0 text-gray-800">Parâmetros</h1>
+  </div>
+  <div class="row justify-content-md-center">
+    <div class="col-lg-8">
+      <table class="table table-striped table-condensed table-bordered">
+        <thead>
+          <tr>
+            <th>Regra</th>
+            <th>Semanas</th>
+            <th>Alterado</th>
+            <th>Ativo</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for parameter in parameters %}
+          <tr>
+              <td>{{parameter.get_rule_display}}</td>
+              <td>{{parameter.value}}</td>
+              <td>{{parameter.data_insert|date:'d/m/Y H:i:s'}}</td>
+              <td>{{parameter.get_is_active_display}}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+  </table>
+  <div class="align-items-right" style="text-align: right;">
+      <a href="{% url 'parameters_create' %}" class="btn btn-primary btn-icon-split btn-sm">
+        <span class="text">Alterar Parâmetro</span>
+      </a>
+  </div>
+  </div>
+    </div>
+</div>
+{% endblock content %}

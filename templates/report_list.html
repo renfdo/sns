@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Listar Relat&oacute;rios{% endblock title %}
+{% block content %}
+<div class="container">
+    <ul>
+        {% for report in reports %}
+        <a href="{% url 'report_update' report.id %}">
+            <li> {{ report.liquid_type }}</li>
+        </a>
+        {% endfor %}
+    </ul>
+</div>
+<a href="{% url 'report_create' %}">Novo Relat&oacute;rio</a>
+{% endblock content %}

@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title%}Insumos{% endblock title %}
+
+{% block snsbreadcrumbs %}
+<a href="{% url 'insumo_list' %}">INSUMOS</a> >
+<a href="{% url 'insumo_list' type_file %}">{{type_file}}</a> >
+<a href="{% url 'insumo_list' type_file processed_date %}">{{processed_date}}</a> >
+<a>{{file_name}}</a>
+{% endblock snsbreadcrumbs %}
+
+{% block content %}
+
+<style>
+    .toggle-vis {
+        cursor: pointer;
+    }
+    .colunavisivel {
+        color: #007bff !important;
+    }
+    .colunainvisivel {
+        color: #444 !important;
+    }
+</style>
+
+<script>
+
+    const tabledata = JSON.parse('{{tabledatajson|safe}}');
+    const columns = tabledata["columns"];
+
+    $(document).ready(function () {
+
+        const header_tr = $("#dataTableHeader")[0];
+        const footer_tr = $("#dataTableFooter")[0];
+        const filtros_tr = $("#dataTableFilter")[0];
+        const columns_toggle = $("#columns_toggle")[0];
+
+        const filtro_por_nome = {};
+        const toggles = [];
+        for (let col_i = 0; col_i < columns.length; col_i++) {
+            let col = columns[col_i];
+            //Criar cabeçalho
+            const header_td = document.createElement("th");
+            header_td.innerHTML = col["data"].toUpperCase();
+            header_tr.appendChild(header_td);
+
+            //Criar rodape
+            const footer_td = document.createElement("td");
+            footer_td.innerHTML = col["data"].toUpperCase();
+            footer_tr.appendChild(footer_td);
+
+            //Criar Filtro
+            const filtro_input = document.createElement("input")
+            const filtro_td = document.createElement("th")
+            filtro_td.appendChild(filtro_input)
+            filtros_tr.appendChild(filtro_td)
+            filtro_por_nome[col.data] = filtro_td
+            $(filtro_input).on('keyup change', function () {
+                if (table.column(col_i).search() !== this.value) {
+                    table
+                        .column(col_i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+
+            //Criar Toggle
+            const toggle_item = $('<a class="toggle-vis colunavisivel" data-column="' + col_i + '">' + col["data"].toUpperCase() + ' </a>')
+            $(columns_toggle).append(toggle_item);
+            toggles.push(toggle_item)
+        }
+
+        const table = $('#dataTable').DataTable({
+            "fixedHeader": true,
+            "serverSide": true,
+            "ajax": tabledata["url"],
+            "processing": true,
+            "columns": columns
+        });
+
+        //Associar toogle de colunas
+        for (let ti = 0; ti < toggles.length; ti++) {
+            const toggle = toggles[ti];
+            toggle.on('click', function (e) {
+                e.preventDefault();
+                const column = table.column(ti);
+                const newvisible = !column.visible();
+                column.visible(newvisible);
+                if (newvisible) {
+                    toggle.addClass("colunavisivel")
+                    toggle.removeClass("colunainvisivel")
+                } else {
+                    toggle.addClass("colunainvisivel")
+                    toggle.removeClass("colunavisivel")
+                }
+            });
+        }
+
+    });
+</script>
+<div class="containter">
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div style="padding-bottom: 10px">
+                <span>Colunas:</span>
+                <span id="columns_toggle">
+                </span>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-bordered" style="display: block; overflow: auto;" id="dataTable" width="100%"
+                    cellspacing="0">
+                    <thead>
+                        <tr id="dataTableFilter"></tr>
+                        <tr id="dataTableHeader"></tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                        <tr id="dataTableFooter"></tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page level plugins -->
+<script src="{% static 'vendor/datatables/jquery.dataTables.js' %}"></script>
+<script src="{% static 'vendor/datatables/dataTables.bootstrap4.js' %}"></script>
+
+<!-- Page level custom scripts -->
+<script src="{% static 'js/demo/datatables-demo.js' %}"></script>
+{% endblock content %}

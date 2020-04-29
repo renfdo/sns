@@ -1,0 +1,17 @@
+Django==2.2.1
+djangorestframework==3.9.4
+pytz==2019.1
+sqlparse==0.3.0
+django-bootstrap-modal-forms==1.4.2
+django-widget-tweaks==1.4.2
+django-bootstrap-form
+#mysqlclient==1.4.2.post1
+#mysql-connector==2.2.9
+sqlparse==0.3.0
+pandas==0.24.2
+numpy==1.16.2
+sqlalchemy==1.3.1
+mysql==0.0.2
+django-filter==2.2.0
+djangorestframework-datatables==0.5.0
+django-debug-toolbar==2.0

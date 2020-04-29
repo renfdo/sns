@@ -1,0 +1,30 @@
+
+.label, .badge {
+    display: inline-block;
+    font-size: 11.844px;
+    font-weight: bold;
+    line-height: 14px;
+    color: rgb(255, 255, 255);
+    vertical-align: baseline;
+    white-space: nowrap;
+    text-shadow: rgba(0, 0, 0, 0.25) 0px -1px 0px;
+    background-color: rgb(153, 153, 153);
+    padding: 2px;
+    border-radius: 3px;
+}
+
+.label-success, .badge-success {
+    background-color: #468847;
+}
+
+.label-warning, .badge-warning {
+    background-color: #f89406;
+}
+
+.label-important, .badge-important {
+    background-color: #b94a48;
+}
+
+a .toggle-vis a{
+    color: #468847
+}

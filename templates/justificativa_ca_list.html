@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block title %}Listar Justificativas CA{% endblock title %}
+{% block content %}
+{% include "modal.html" %}
+<div class="container">
+<!-- Messages -->
+  <div>
+    {% if messages %}
+      {% for message in messages %}
+        <div style="border-radius:0;" {% if message.tags %} class="alert alert-icon alert-{{ message.tags }} alert-dismissible fade show mb-0" role="alert" {% endif %}>
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+  <!-- End Messages -->
+
+    <div class="card-body">
+        <button class="newCA btn btn-primary" type="button" name="button">Nova Justificativa CA</button>
+    </div>
+    <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">Justificativas CA</h6>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered table-sm" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>Cod Just</th>
+                      <th>Cod Tipo Just</th>
+                      <th>Justificativa</th>
+                      <th>Ind Auto</th>
+                      <th>Ind Canc</th>
+                      <th>Indisponibilidade</th>
+                      <th>Deletar</th>
+                      <th>Alterar</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for justificativa_ca in justificativasca %}
+                    <tr>
+                      <td>{{ justificativa_ca.cod_justificativa }}</td>
+                      <td>{{ justificativa_ca.cod_tipo_justificativa }}</td>
+                      <td>{{ justificativa_ca.dsc_justificativa }}</td>
+                      <td>{{ justificativa_ca.get_ind_automatica_display }}</td>
+                      <td>{{ justificativa_ca.get_ind_cancelamento_display }}</td>
+                      <td>{{ justificativa_ca.get_val_flag_indisp_display }}</td>
+
+                      <td>
+                          <button type="button" class="deleteCA btn-danger btn-sm" data-id="{% url 'justificativa_ca_delete' justificativa_ca.pk %}">
+                              <span class="fa fa-trash"></span>
+                          </button>
+                      </td>
+                      <td>
+                        <button type="button" class="update-CA btn btn-sm btn-primary" data-id="{% url 'justificativa_ca_update' justificativa_ca.pk %}">
+                          <span class="fa fa-pencil"></span>
+                        </button>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+      // Create book button
+      $(".newCA").modalForm({formURL: "{% url 'justificativa_ca_create' %}"});
+
+      // Update book buttons
+      $(".update-CA").each(function () {
+        $(this).modalForm({formURL: $(this).data('id')});
+      });
+
+      // Delete book buttons
+      $(".deleteCA").each(function () {
+        $(this).modalForm({formURL: $(this).data('id')});
+      })
+      // Hide message
+      $(".alert").fadeTo(2000, 500).slideUp(500, function(){
+        $(".alert").slideUp(500);
+      });
+    });
+</script>
+{% endblock content %}

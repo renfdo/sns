@@ -1,0 +1,1 @@
+gunicorn --bind=0.0.0.0 --timeout 1200 --limit-request-line=8190 --graceful-timeout 1200 --keep-alive 1200 --log-level debug --workers=5 --threads 2 --access-logfile log.log --capture-output sns_project.wsgi
