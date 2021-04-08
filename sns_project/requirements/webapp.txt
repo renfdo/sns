@@ -1,4 +1,4 @@
-Django==2.2.1
+Django==2.2.20
 django-bootstrap-form==3.4
 django-bootstrap-modal-forms==1.4.2
 django-widget-tweaks==1.4.2
